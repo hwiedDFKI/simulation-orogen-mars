@@ -95,7 +95,10 @@ void Joints::update(double delta_t)
             }
 	    if( curCmd.hasEffort() )
 	    {
-		LOG_WARN_S << "Effort command ignored";
+            if (motor->getSMotor().type != mars::interfaces::MOTOR_TYPE_DIRECT_EFFORT)
+              motor->setControlValue(conv.toMars(curCmd.effort));
+            else
+              LOG_WARN_S << "Effort command ignored (Motor is not of type MOTOR_TYPE_DIRECT_EFFORT)";
 	    }
 	    if( curCmd.hasRaw() )
 	    {
